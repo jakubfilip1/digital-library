@@ -3,5 +3,7 @@
 return [
     'Dashboard' => 'Strona Główna',
     'Books' => 'Biblioteka',
-    'Subscription' => 'Subskrypcja'
+    'Subscription' => 'Subskrypcja',
+    'Profile' => 'Profil',
+    'LogOut' => 'Wyloguj'
 ];
