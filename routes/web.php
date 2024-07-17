@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BooksController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'verified'])->name('books.')->prefix('books')->group(function () {
+   Route::get('/', [BooksController::class, 'index'])->name('index');
+   Route::get('/{id}', [BooksController::class, 'show'])->name('show');
+   Route::get('/{id}/pdf', [BooksController::class, 'pdf'])->name('pdf');
 });
 
 require __DIR__.'/auth.php';
