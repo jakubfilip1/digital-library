@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -18,8 +19,13 @@ class BooksController extends Controller
         ]);
     }
 
-    public function show($id) :View
+    public function show($id) : View|\Illuminate\Http\RedirectResponse
     {
+        if(!Auth::user()->subscribed())
+        {
+            return redirect()->route('subscription.index');
+        }
+
         $book = Book::where('id', $id)->first();
 
         return view('book', [
@@ -29,6 +35,11 @@ class BooksController extends Controller
 
     public function pdf($id)
     {
+        if(!Auth::user()->subscribed())
+        {
+            return redirect()->route('subscription.index');
+        }
+
         $book = Book::where('id', $id)->first();
 
         $pdfPath = storage_path('private' . DIRECTORY_SEPARATOR . $book->pdf);

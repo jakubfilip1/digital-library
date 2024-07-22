@@ -10,6 +10,9 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if(Auth::user()->subscribed())
+                        @if($subscription->canceled() && $subscription->onGracePeriod())
+                            <p>Subskrypcja została annulowana ale jeszcze mozna korzystac</p>
+                        @endif
                         <p>You are subscribing</p>
                     @else
                         <p>You are not subscribed. Subscribe here: <a style="color: red;" href="{{ route('subscription.create') }}">SUBSCRIBE</a></p>

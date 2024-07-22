@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Laravel\Cashier\Checkout;
@@ -10,7 +11,11 @@ class SubscriptionController extends Controller
 {
     public function index(Request $request): View
     {
-        return view('subscription');
+        $subscription = $request->user()->subscription();
+
+        return view('subscription', [
+            'subscription' => $subscription
+        ]);
     }
 
     public function create(Request $request): Checkout
@@ -20,7 +25,7 @@ class SubscriptionController extends Controller
             ->allowPromotionCodes()
             ->checkout([
                 'success_url' => route('subscription.index'),
-                'cancel_url' => route('subscription.cancel'),
+                'cancel_url' => route('subscription.index'),
             ]);
     }
 
@@ -31,6 +36,9 @@ class SubscriptionController extends Controller
 
     public function cancel(Request $request)
     {
-        dd($request);
+        $subscription = $request->user()->subscription();
+        $subscription->cancel();
+
+        return redirect()->route('subscription.index');
     }
 }
